@@ -8,31 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		A6428107178A59C000A3640C /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = A6428106178A59C000A3640C /* main.c */; };
-		A6428109178A59C000A3640C /* ChatServer.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = A6428108178A59C000A3640C /* ChatServer.1 */; };
 		A6A5F8471791110A009FB798 /* libcurses.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A6A5F8461791110A009FB798 /* libcurses.dylib */; };
-		A6A5F8881792627A009FB798 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6A5F84E17926248009FB798 /* Cocoa.framework */; };
-		A6A5F88E1792627A009FB798 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A6A5F88C1792627A009FB798 /* InfoPlist.strings */; };
-		A6A5F8901792627A009FB798 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A6A5F88F1792627A009FB798 /* main.m */; };
-		A6A5F8941792627A009FB798 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A6A5F8921792627A009FB798 /* Credits.rtf */; };
-		A6A5F8971792627A009FB798 /* CAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A6A5F8961792627A009FB798 /* CAAppDelegate.m */; };
-		A6A5F89A1792627A009FB798 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6A5F8981792627A009FB798 /* MainMenu.xib */; };
-		A6A5F8A11792627B009FB798 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6A5F86F17926248009FB798 /* SenTestingKit.framework */; };
-		A6A5F8A21792627B009FB798 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6A5F84E17926248009FB798 /* Cocoa.framework */; };
-		A6A5F8AA1792627B009FB798 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A6A5F8A81792627B009FB798 /* InfoPlist.strings */; };
-		A6A5F8AD1792627B009FB798 /* ChatAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A6A5F8AC1792627B009FB798 /* ChatAppTests.m */; };
 		A6C6A4B7178D20D6004A7819 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = A6C6A4B6178D20D6004A7819 /* main.c */; };
-		A6C6A4B9178D20D6004A7819 /* ChatClient.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = A6C6A4B8178D20D6004A7819 /* ChatClient.1 */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		A6A5F8A31792627B009FB798 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A64280FB178A59C000A3640C /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A6A5F8861792627A009FB798;
-			remoteInfo = ChatApp;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		A6428101178A59C000A3640C /* CopyFiles */ = {
@@ -41,7 +19,6 @@
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
-				A6428109178A59C000A3640C /* ChatServer.1 in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
@@ -51,7 +28,6 @@
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
-				A6C6A4B9178D20D6004A7819 /* ChatClient.1 in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
@@ -60,7 +36,6 @@
 /* Begin PBXFileReference section */
 		A6428103178A59C000A3640C /* ChatServer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ChatServer; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6428106178A59C000A3640C /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		A6428108178A59C000A3640C /* ChatServer.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = ChatServer.1; sourceTree = "<group>"; };
 		A65ED7A11793CC1D003CEC49 /* msg_parser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = msg_parser.c; sourceTree = "<group>"; };
 		A6A5F8461791110A009FB798 /* libcurses.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurses.dylib; path = usr/lib/libcurses.dylib; sourceTree = SDKROOT; };
 		A6A5F84E17926248009FB798 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -68,23 +43,8 @@
 		A6A5F85217926248009FB798 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		A6A5F85317926248009FB798 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A6A5F86F17926248009FB798 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		A6A5F8871792627A009FB798 /* ChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A6A5F88B1792627A009FB798 /* ChatApp-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ChatApp-Info.plist"; sourceTree = "<group>"; };
-		A6A5F88D1792627A009FB798 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		A6A5F88F1792627A009FB798 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		A6A5F8911792627A009FB798 /* ChatApp-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ChatApp-Prefix.pch"; sourceTree = "<group>"; };
-		A6A5F8931792627A009FB798 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
-		A6A5F8951792627A009FB798 /* CAAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAAppDelegate.h; sourceTree = "<group>"; };
-		A6A5F8961792627A009FB798 /* CAAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CAAppDelegate.m; sourceTree = "<group>"; };
-		A6A5F8991792627A009FB798 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		A6A5F8A01792627B009FB798 /* ChatAppTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChatAppTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A6A5F8A71792627B009FB798 /* ChatAppTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ChatAppTests-Info.plist"; sourceTree = "<group>"; };
-		A6A5F8A91792627B009FB798 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		A6A5F8AB1792627B009FB798 /* ChatAppTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatAppTests.h; sourceTree = "<group>"; };
-		A6A5F8AC1792627B009FB798 /* ChatAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatAppTests.m; sourceTree = "<group>"; };
 		A6C6A4B4178D20D6004A7819 /* ChatClient */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ChatClient; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6C6A4B6178D20D6004A7819 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		A6C6A4B8178D20D6004A7819 /* ChatClient.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = ChatClient.1; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,23 +52,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A6A5F8841792627A009FB798 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A6A5F8881792627A009FB798 /* Cocoa.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A6A5F89C1792627B009FB798 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A6A5F8A11792627B009FB798 /* SenTestingKit.framework in Frameworks */,
-				A6A5F8A21792627B009FB798 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,8 +73,6 @@
 				A6A5F8461791110A009FB798 /* libcurses.dylib */,
 				A6428105178A59C000A3640C /* ChatServer */,
 				A6C6A4B5178D20D6004A7819 /* ChatClient */,
-				A6A5F8891792627A009FB798 /* ChatApp */,
-				A6A5F8A51792627B009FB798 /* ChatAppTests */,
 				A6A5F84D17926248009FB798 /* Frameworks */,
 				A6428104178A59C000A3640C /* Products */,
 			);
@@ -142,8 +83,6 @@
 			children = (
 				A6428103178A59C000A3640C /* ChatServer */,
 				A6C6A4B4178D20D6004A7819 /* ChatClient */,
-				A6A5F8871792627A009FB798 /* ChatApp.app */,
-				A6A5F8A01792627B009FB798 /* ChatAppTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -152,7 +91,6 @@
 			isa = PBXGroup;
 			children = (
 				A6428106178A59C000A3640C /* main.c */,
-				A6428108178A59C000A3640C /* ChatServer.1 */,
 			);
 			path = ChatServer;
 			sourceTree = "<group>";
@@ -177,53 +115,10 @@
 			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
-		A6A5F8891792627A009FB798 /* ChatApp */ = {
-			isa = PBXGroup;
-			children = (
-				A6A5F8951792627A009FB798 /* CAAppDelegate.h */,
-				A6A5F8961792627A009FB798 /* CAAppDelegate.m */,
-				A6A5F8981792627A009FB798 /* MainMenu.xib */,
-				A6A5F88A1792627A009FB798 /* Supporting Files */,
-			);
-			path = ChatApp;
-			sourceTree = "<group>";
-		};
-		A6A5F88A1792627A009FB798 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				A6A5F88B1792627A009FB798 /* ChatApp-Info.plist */,
-				A6A5F88C1792627A009FB798 /* InfoPlist.strings */,
-				A6A5F88F1792627A009FB798 /* main.m */,
-				A6A5F8911792627A009FB798 /* ChatApp-Prefix.pch */,
-				A6A5F8921792627A009FB798 /* Credits.rtf */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		A6A5F8A51792627B009FB798 /* ChatAppTests */ = {
-			isa = PBXGroup;
-			children = (
-				A6A5F8AB1792627B009FB798 /* ChatAppTests.h */,
-				A6A5F8AC1792627B009FB798 /* ChatAppTests.m */,
-				A6A5F8A61792627B009FB798 /* Supporting Files */,
-			);
-			path = ChatAppTests;
-			sourceTree = "<group>";
-		};
-		A6A5F8A61792627B009FB798 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				A6A5F8A71792627B009FB798 /* ChatAppTests-Info.plist */,
-				A6A5F8A81792627B009FB798 /* InfoPlist.strings */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		A6C6A4B5178D20D6004A7819 /* ChatClient */ = {
 			isa = PBXGroup;
 			children = (
 				A6C6A4B6178D20D6004A7819 /* main.c */,
-				A6C6A4B8178D20D6004A7819 /* ChatClient.1 */,
 			);
 			path = ChatClient;
 			sourceTree = "<group>";
@@ -266,42 +161,6 @@
 			productReference = A6428103178A59C000A3640C /* ChatServer */;
 			productType = "com.apple.product-type.tool";
 		};
-		A6A5F8861792627A009FB798 /* ChatApp */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A6A5F8AE1792627B009FB798 /* Build configuration list for PBXNativeTarget "ChatApp" */;
-			buildPhases = (
-				A6A5F8831792627A009FB798 /* Sources */,
-				A6A5F8841792627A009FB798 /* Frameworks */,
-				A6A5F8851792627A009FB798 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = ChatApp;
-			productName = ChatApp;
-			productReference = A6A5F8871792627A009FB798 /* ChatApp.app */;
-			productType = "com.apple.product-type.application";
-		};
-		A6A5F89F1792627B009FB798 /* ChatAppTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A6A5F8B11792627B009FB798 /* Build configuration list for PBXNativeTarget "ChatAppTests" */;
-			buildPhases = (
-				A6A5F89B1792627B009FB798 /* Sources */,
-				A6A5F89C1792627B009FB798 /* Frameworks */,
-				A6A5F89D1792627B009FB798 /* Resources */,
-				A6A5F89E1792627B009FB798 /* ShellScript */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				A6A5F8A41792627B009FB798 /* PBXTargetDependency */,
-			);
-			name = ChatAppTests;
-			productName = ChatAppTests;
-			productReference = A6A5F8A01792627B009FB798 /* ChatAppTests.octest */;
-			productType = "com.apple.product-type.bundle";
-		};
 		A6C6A4B3178D20D6004A7819 /* ChatClient */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A6C6A4BC178D20D6004A7819 /* Build configuration list for PBXNativeTarget "ChatClient" */;
@@ -343,48 +202,9 @@
 			targets = (
 				A6428102178A59C000A3640C /* ChatServer */,
 				A6C6A4B3178D20D6004A7819 /* ChatClient */,
-				A6A5F8861792627A009FB798 /* ChatApp */,
-				A6A5F89F1792627B009FB798 /* ChatAppTests */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXResourcesBuildPhase section */
-		A6A5F8851792627A009FB798 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A6A5F88E1792627A009FB798 /* InfoPlist.strings in Resources */,
-				A6A5F8941792627A009FB798 /* Credits.rtf in Resources */,
-				A6A5F89A1792627A009FB798 /* MainMenu.xib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A6A5F89D1792627B009FB798 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A6A5F8AA1792627B009FB798 /* InfoPlist.strings in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		A6A5F89E1792627B009FB798 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A64280FF178A59C000A3640C /* Sources */ = {
@@ -392,23 +212,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A6428107178A59C000A3640C /* main.c in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A6A5F8831792627A009FB798 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A6A5F8901792627A009FB798 /* main.m in Sources */,
-				A6A5F8971792627A009FB798 /* CAAppDelegate.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A6A5F89B1792627B009FB798 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A6A5F8AD1792627B009FB798 /* ChatAppTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -421,49 +224,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		A6A5F8A41792627B009FB798 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A6A5F8861792627A009FB798 /* ChatApp */;
-			targetProxy = A6A5F8A31792627B009FB798 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		A6A5F88C1792627A009FB798 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A6A5F88D1792627A009FB798 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		A6A5F8921792627A009FB798 /* Credits.rtf */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A6A5F8931792627A009FB798 /* en */,
-			);
-			name = Credits.rtf;
-			sourceTree = "<group>";
-		};
-		A6A5F8981792627A009FB798 /* MainMenu.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A6A5F8991792627A009FB798 /* en */,
-			);
-			name = MainMenu.xib;
-			sourceTree = "<group>";
-		};
-		A6A5F8A81792627B009FB798 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A6A5F8A91792627B009FB798 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		A642810A178A59C000A3640C /* Debug */ = {
@@ -539,60 +299,6 @@
 			};
 			name = Release;
 		};
-		A6A5F8AF1792627B009FB798 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ChatApp/ChatApp-Prefix.pch";
-				INFOPLIST_FILE = "ChatApp/ChatApp-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = app;
-			};
-			name = Debug;
-		};
-		A6A5F8B01792627B009FB798 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ChatApp/ChatApp-Prefix.pch";
-				INFOPLIST_FILE = "ChatApp/ChatApp-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = app;
-			};
-			name = Release;
-		};
-		A6A5F8B21792627B009FB798 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ChatApp.app/Contents/MacOS/ChatApp";
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ChatApp/ChatApp-Prefix.pch";
-				INFOPLIST_FILE = "ChatAppTests/ChatAppTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Debug;
-		};
-		A6A5F8B31792627B009FB798 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ChatApp.app/Contents/MacOS/ChatApp";
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ChatApp/ChatApp-Prefix.pch";
-				INFOPLIST_FILE = "ChatAppTests/ChatAppTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Release;
-		};
 		A6C6A4BA178D20D6004A7819 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -624,24 +330,6 @@
 			buildConfigurations = (
 				A642810D178A59C000A3640C /* Debug */,
 				A642810E178A59C000A3640C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A6A5F8AE1792627B009FB798 /* Build configuration list for PBXNativeTarget "ChatApp" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A6A5F8AF1792627B009FB798 /* Debug */,
-				A6A5F8B01792627B009FB798 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A6A5F8B11792627B009FB798 /* Build configuration list for PBXNativeTarget "ChatAppTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A6A5F8B21792627B009FB798 /* Debug */,
-				A6A5F8B31792627B009FB798 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

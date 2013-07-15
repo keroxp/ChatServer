@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <curses.h>
+#include <ncurses.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -25,6 +25,7 @@
 #define RECV_WIN_HEIGHT 13
 
 #define BUF_LEN 512
+#define NAME_LEN 8
 
 /* プロトコルのコマンド */
 typedef enum{
@@ -78,7 +79,7 @@ void init_window(void)
     active_wind = to_wind;
 
     cbreak();
-//    noecho();
+    noecho();
 
     wrefresh(recv_frame);
     wrefresh(recv_wind);
@@ -138,9 +139,29 @@ int connect_to_server(char *host, char *port)
     return s;
 }
 
+void register_name(int sock, const char * name)
+{
+    char rgst_buf[BUF_LEN];
+    sprintf(rgst_buf, "%zi\n",strlen(name));
+    sprintf(rgst_buf + strlen(rgst_buf), "%i\n",host_cmd_register);
+    sprintf(rgst_buf + strlen(rgst_buf), "%s\n", name);
+    
+    if (write(sock, rgst_buf, strlen(rgst_buf)) > 1) {
+        // registerd
+        waddstr(recv_wind, "You Are Registerd.\n");
+    }else{
+        // not registerd
+        waddstr(recv_wind, "!! You Are Not Registered !!\n");
+        exit(EXIT_FAILURE);
+    }
+    wrefresh(recv_wind);
+    wrefresh(active_wind);
+}
+
 /*
- * @params argv
- *
+ * @params argv[1] host
+ * @params argv[2] port
+ * @params argv[3] name
  */
 int main(int argc, char* argv[]){
     // ソケット
@@ -154,7 +175,7 @@ int main(int argc, char* argv[]){
     // 接続開始
     char *host, *port, *name;
 #ifdef DEBUG
-    host = "133.27.78.162";
+    host = "10.0.1.2";
     port = "3901";
     name = "keroxp";
 #else
@@ -172,20 +193,9 @@ int main(int argc, char* argv[]){
         waddstr(recv_wind, "ソケットの作成に失敗しました\n");
         exit(EXIT_FAILURE);
     }
+    
     // 接続が確立されたら名前を登録する
-    char rgst_buf[BUF_LEN];
-    sprintf(rgst_buf, "%zi\n",strlen(name));
-    sprintf(rgst_buf + strlen(rgst_buf), "%i\n",host_cmd_register);
-    sprintf(rgst_buf + strlen(rgst_buf), "%s\n", name);
-
-    if (write(sock, rgst_buf, strlen(rgst_buf)) > 1) {
-        // registerd
-        waddstr(recv_wind, "You Are Registerd.\n");
-    }else{
-        // not registerd
-        waddstr(recv_wind, "!! You Are Not Registered !!\n");
-        exit(EXIT_FAILURE);
-    }
+    register_name(sock, name);
 
     int c;      // 標準入力からの文字
     int send_len, to_len = 0;    // 入力文字の長さ
@@ -217,20 +227,29 @@ int main(int argc, char* argv[]){
                 wmove(active_wind, y, x - 1);
                 waddch(active_wind, ' ');
                 wmove(active_wind, y, x - 1);
-            }else if (c == '\n'){
+            }else if (c == '\n' || c == '\r'){
                 // 送信
-                if (active_wind == to_wind) {
-                    // 次の欄へ
-                    wmove(send_wind, 0, send_len);
-                    active_wind = send_wind;
-                }else{
-                    // 送信
-                    wclear(send_wind);
-
-//                    write(sock, send_buf, len);
-                    to_len = 0;
-                    send_len = 0;
+                wclear(to_wind);
+                wclear(send_wind);
+                wrefresh(to_wind);
+                wrefresh(send_wind);
+                wmove(to_wind, 0, 0);
+                active_wind = to_wind;
+                
+                char msg[BUF_LEN];
+                sprintf(msg, "%zi\n",strlen(to_buf) + strlen(send_buf));
+                sprintf(msg + strlen(msg), "%i\n",host_cmd_send);
+                sprintf(msg + strlen(msg), "%s\n",to_buf);
+                sprintf(msg + strlen(msg), "%s\n",send_buf);
+                ssize_t done = 0;
+                done = write(sock, msg, strlen(msg));
+                if (done < 1) {
+                    exit(EXIT_FAILURE);
                 }
+                memset(to_buf, '\0', to_len);
+                memset(send_buf, '\0', send_len);
+                to_len = 0;
+                send_len = 0;
             }else if (c == '\t'){
                 // カーソル移動
                 if (active_wind == to_wind) {
@@ -251,11 +270,12 @@ int main(int argc, char* argv[]){
         ssize_t recv_len = 0;
         if (FD_ISSET(sock, &read_fds0)) {
             recv_len = read(sock, recv_buf, BUF_LEN);
-            // パーシング
-            int i;
-            for (i = 0; i < recv_len; i++) {
-                waddstr(recv_wind, recv_buf);
+            if (recv_len < 1) {
+                // 接続が切れた
+                exit(EXIT_FAILURE);
             }
+            sprintf(recv_buf + recv_len, "\n");
+            waddstr(recv_wind, recv_buf);
             wrefresh(recv_wind);
             wmove(active_wind, 0, *len);
             wrefresh(active_wind);

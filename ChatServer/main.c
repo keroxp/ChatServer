@@ -15,6 +15,7 @@
 #include <netdb.h>
 #include <unistd.h>
 #include <time.h>
+#include <assert.h>
 
 /* 接続しているクライアントのリスト */
 struct client {
@@ -58,6 +59,8 @@ static size_t left_write_sizes[FD_SETSIZE];
 
 #pragma mark - Functions
 
+int _test (void);
+
 ssize_t _read(int fd, void *buf, size_t len);
 ssize_t _write(int fd, void *buf, size_t len);
 
@@ -68,44 +71,31 @@ int handle_client_socket(int fd);
 
 int parse_message(const char *msg);
 int handle_register(int fd, const char *name);
-int handle_send(int from, int *tos, const char *msg);
+int handle_send(int from, char *tos, char *msg);
 
-void addClient(int fd, const char *name);
-void removeClient(int fd);
+void add_client(int fd, const char *name);
+void remove_client(int fd);
 
-char * getClientNameByFD(int fd);
+char * get_client_name(int fd);
 const char * get_client_command_name(client_cmd_t cmd);
 const char * get_host_command_name(host_cmd_t cmd);
 
-int getClientFDByName(const char *name);
-int isSetOfClients(int fd);
+int get_client_fd(const char *name);
+int is_client(int fd);
 
-
-int handle_listening_socket(int fd, int max_fd)
-{
-    printf("fd#%i のリスニングソケットが読み込み可能になりました\n",fd);
-    // リスニングから新しいソケットが来たらaccept
-    socklen_t sclen = sizeof(sa);
-    int ns = accept(fd, (struct sockaddr*)&sa, &sclen);
-    if(ns > 0){
-        // 監視対象に追加
-        FD_SET(ns, &watching_fds);
-        printf("fd#%i からきた socket#%i をAcceptしました\n",fd,ns);
-    }else{
-        printf("fd#i はacceptできませんでした\n");
-    }
-    return (ns > max_fd) ? ns : max_fd;
-}
-
+#pragma mark - Main
 
 int main (int argc, char *argv[])
 {
+//    return _test();
+    
     // fdのビット幅
     int max_fd;
     // 受付開始
     max_fd = listen_to_clients("3901");
     printf("最大fd : %i\n",max_fd);
     printf("リスニングを開始しました...\n");
+    
     // メインループ
     while(1){
         // fd_setをoriginalからコピー
@@ -133,11 +123,9 @@ int main (int argc, char *argv[])
                         // 切断されたっぽかったら監視対象から外してclose
                         printf("fd#%i が切断されました\n",fd);
                         FD_CLR(fd, &watching_fds);
-                        if (isSetOfClients(fd)) {
-                            removeClient(fd);
-                        }
+                        remove_client(fd);
                         close(fd);
-                        continue;
+                        break;
                     }
                     size_t len = atoi(strtok(msg_buf, "\n"));
                     printf("メッセージの長さは%zi、",len);
@@ -148,17 +136,23 @@ int main (int argc, char *argv[])
                             // 登録
                         case host_cmd_register: {
                             // 名前を取得
-                            char name[len];
-                            strcpy(name, strtok(NULL, "\n"));
+                            char *name;
+                            name = strtok(NULL, "\n");
                             // リストにレジスト
-                            addClient(fd, name);
+                            add_client(fd, name);
                             printf("fd#%iを<%s>さんとして登録しました\n",fd,name);
                         }
                             break;
                             // 送信
                         case host_cmd_send: {
-
-
+                            printf("fromは %s 、", get_client_name(fd));
+                            // toリストを取得
+                            char *tos, *msg;
+                            tos = strtok(NULL, "\n");
+                            printf("toは %s 、",tos);
+                            msg = strtok(NULL, "\n");
+                            printf("メッセージは \"%s\" です\n",msg);
+                            handle_send(fd, tos, msg);
                         }
                             break;
                         default:
@@ -169,6 +163,32 @@ int main (int argc, char *argv[])
                 break;
             }
         }
+    }
+    return 0;
+}
+
+int handle_send(int from, char *tos, char *msg)
+{
+    int to_fds[10];
+    int to_len = 1;
+    to_fds[0] = from;
+    to_fds[1] = get_client_fd(strtok(tos, ","));
+    while (1) {
+        char *name = strtok(NULL, ",");
+        if (name != NULL) {
+            to_len++;
+            to_fds[to_len] = get_client_fd(name);
+        }else{
+            break;
+        }
+    }
+    int i;
+    char body[BUF_LEN];
+    sprintf(body, "%s:< %s",get_client_name(from),msg);
+    // 書き込み
+    printf("%i\n",to_len);
+    for (i = 0; i < to_len + 1; i++) {
+        write(to_fds[i], body, strlen(body));
     }
     return 0;
 }
@@ -248,46 +268,83 @@ int listen_to_clients(const char *port)
 }
 
 
+int handle_listening_socket(int fd, int max_fd)
+{
+    printf("fd#%i のリスニングソケットが読み込み可能になりました\n",fd);
+    // リスニングから新しいソケットが来たらaccept
+    socklen_t sclen = sizeof(sa);
+    int ns = accept(fd, (struct sockaddr*)&sa, &sclen);
+    if(ns > 0){
+        // 監視対象に追加
+        FD_SET(ns, &watching_fds);
+        printf("fd#%i からきた socket#%i をAcceptしました\n",fd,ns);
+    }else{
+        printf("fd#i はacceptできませんでした\n");
+    }
+    return (ns > max_fd) ? ns : max_fd;
+}
+
+#pragma mark - Util
+
 const char * get_host_command_name(host_cmd_t cmd)
 {
     switch (cmd) {
         case host_cmd_register:
-            return "host_cmd_register";
+            return "Register";
         case host_cmd_send:
-            return "host_cmd_send";
+            return "Send";
         case host_cmd_unknown:
-            return "host_cmd_unknown";
+            return "Unknown";
         default:
             break;
     }
-    return "unknown";
+    return "Undefined";
 }
 
 const char * get_client_command_name(client_cmd_t cmd)
 {
     switch (cmd) {
         case client_cmd_errror:
-            return "client_cmd_error";
+            return "Error";
         case client_cmd_recieve:
-            return "client_cmd_recieve";
+            return "Recieve";
         default:
             break;
     }
-    return "unknown";
+    return "Undefined";
 }
 
 #pragma mark - Client Table
 
+
+int _test(void)
+{
+    
+    add_client(3, "three");
+    add_client(4, "four");
+    assert(is_client(4));
+    assert(!is_client(5));
+    remove_client(3);
+    assert(strcmp(get_client_name(4),"four") == 0);
+    assert(get_client_fd("four") == 4);
+    assert(!is_client(3));
+    remove_client(4);
+    remove_client(1);
+    remove_client(-1);
+    return 1;
+}
+
 /* クライアントをリストに追加する */
-void addClient(int fd, const char *name)
+void add_client(int fd, const char *name)
 {
     // 新しいクライアントを作成
     struct client *new;
-    new = malloc(sizeof((struct client*)new));
+    new = malloc(sizeof(new));
     new->fd = fd;
     strcpy(new->name, name);
     if (clientHead == NULL) {
         clientHead = new;
+        clientTail = new;
     }else{
         clientTail->next = new;
         clientTail = new;
@@ -296,10 +353,13 @@ void addClient(int fd, const char *name)
 }
 
 /* クライアントをリストから削除する */
-void removeClient(int fd)
+void remove_client(int fd)
 {
     struct client *c;
     struct client *p;
+    if (!is_client(fd)) {
+        return;
+    }
     c = clientHead;
     while (c != NULL) {
         if (c->fd == fd) {
@@ -310,7 +370,7 @@ void removeClient(int fd)
             }else{
                 p->next = c->next;
             }
-            free(c);
+            free(c);            
             printf("fd#%i は削除されました\n",fd);
             return;
         }
@@ -321,7 +381,7 @@ void removeClient(int fd)
 }
 
 /* ファイルディスクリプタからクライアントを特定 */
-char * getClientNameByFD(int fd)
+char * get_client_name(int fd)
 {
     struct client *c;
     c = clientHead;
@@ -336,7 +396,7 @@ char * getClientNameByFD(int fd)
     return NULL;
 }
 /* 名前からクライアントを特定 */
-int getClientFDByName(const char *name)
+int get_client_fd(const char *name)
 {
     struct client *c;
     c = clientHead;
@@ -352,7 +412,7 @@ int getClientFDByName(const char *name)
 }
 
 /* クライアントはリストにあるか？ */
-int isSetOfClients(int fd)
+int is_client(int fd)
 {
     struct client *c;
     c = clientHead;
@@ -361,11 +421,13 @@ int isSetOfClients(int fd)
             printf("fd#%iはリストにあります\n",fd);
             return 1;
         }
+        c = c->next;
     }
     printf("fd#%iはリストにはありません\n",fd);
     return 0;
 }
 
+#pragma mark - IO
 
 ssize_t _io(int rd, int fd, void *buf, size_t len)
 {
