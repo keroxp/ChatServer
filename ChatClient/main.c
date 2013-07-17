@@ -21,6 +21,8 @@
 #define SEND_WIN_HEIGHT 1
 #define TO_WIN_WIDTH 60
 #define TO_WIN_HEIGHT 1
+#define USRS_WIN_HEIGHT 1
+#define USRS_WIN_WIDTH 60
 #define RECV_WIN_WIDTH 60
 #define RECV_WIN_HEIGHT 13
 
@@ -45,8 +47,8 @@ typedef enum{
 static char to_buf[BUF_LEN];    // 宛先用バッファ
 static char send_buf[BUF_LEN];  // 送信用バッファ
 static char recv_buf[BUF_LEN];  // 受信用バッファ
-static WINDOW *to_wind, *send_wind, *recv_wind; // windows
-static WINDOW *to_frame, *send_frame, *recv_frame; // frames
+static WINDOW *users_wind, *to_wind, *send_wind, *recv_wind; // windows
+static WINDOW *users_frame, *to_frame, *send_frame, *recv_frame; // frames
 static WINDOW *active_wind;
 
 void init_window(void)
@@ -54,24 +56,31 @@ void init_window(void)
 
     // windowを初期化
     initscr();
+    
+    // ユーザの状態
+    users_frame = newwin(USRS_WIN_HEIGHT + 2, USRS_WIN_WIDTH + 2, 0, 0);
+    users_wind = newwin(USRS_WIN_HEIGHT, USRS_WIN_WIDTH, 1, 1);
+    box(users_frame, ';', '-');
+    scrollok(users_wind, TRUE);
+    wmove(users_wind, 0, 0);
 
     // 受信用windowを作る
-    recv_frame = newwin(RECV_WIN_HEIGHT + 2, RECV_WIN_WIDTH + 2, 0, 0);
-    recv_wind = newwin(RECV_WIN_HEIGHT, RECV_WIN_WIDTH, 1, 1);
+    recv_frame = newwin(RECV_WIN_HEIGHT + 2, RECV_WIN_WIDTH + 2, USRS_WIN_HEIGHT + 1, 0);
+    recv_wind = newwin(RECV_WIN_HEIGHT, RECV_WIN_WIDTH, USRS_WIN_HEIGHT + 2, 1);
     box(recv_frame, ';', '-');
     scrollok(recv_wind, TRUE);
     wmove(recv_wind, 0, 0);
 
     // 宛先用windowを作る
-    to_frame = newwin(TO_WIN_HEIGHT + 2, TO_WIN_WIDTH + 2, RECV_WIN_HEIGHT + 3, 0);
-    to_wind = newwin(TO_WIN_HEIGHT, TO_WIN_WIDTH , RECV_WIN_HEIGHT + 4, 1);
+    to_frame = newwin(TO_WIN_HEIGHT + 2, TO_WIN_WIDTH + 2, RECV_WIN_HEIGHT + USRS_WIN_HEIGHT + 2, 0);
+    to_wind = newwin(TO_WIN_HEIGHT, TO_WIN_WIDTH , RECV_WIN_HEIGHT + USRS_WIN_HEIGHT + 3, 1);
     box(to_frame, ';', '-');
     scrollok(to_wind, TRUE);
     wmove(to_wind, 0, 0);
 
     // 送信用windowを作る
-    send_frame = newwin(SEND_WIN_HEIGHT + 2, SEND_WIN_WIDTH + 2, RECV_WIN_HEIGHT + TO_WIN_HEIGHT + 6 , 0);
-    send_wind = newwin(SEND_WIN_HEIGHT, SEND_WIN_WIDTH, RECV_WIN_HEIGHT + TO_WIN_HEIGHT + 7, 1);
+    send_frame = newwin(SEND_WIN_HEIGHT + 2, SEND_WIN_WIDTH + 2, RECV_WIN_HEIGHT + TO_WIN_HEIGHT + USRS_WIN_HEIGHT + 3 , 0);
+    send_wind = newwin(SEND_WIN_HEIGHT, SEND_WIN_WIDTH, RECV_WIN_HEIGHT + TO_WIN_HEIGHT + USRS_WIN_HEIGHT + 4, 1);
     box(send_frame, ';', '-');
     scrollok(send_wind, TRUE);
     wmove(send_wind, 0, 0);
@@ -81,6 +90,8 @@ void init_window(void)
     cbreak();
     noecho();
 
+    wrefresh(users_frame);
+    wrefresh(users_wind);
     wrefresh(recv_frame);
     wrefresh(recv_wind);
     wrefresh(send_frame);
@@ -269,6 +280,7 @@ int main(int argc, char* argv[]){
         // ソケットからか
         ssize_t recv_len = 0;
         if (FD_ISSET(sock, &read_fds0)) {
+            
             recv_len = read(sock, recv_buf, BUF_LEN);
             if (recv_len < 1) {
                 // 接続が切れた

@@ -42,19 +42,19 @@ typedef enum{
 #pragma mark - Variables
 
 // テイルリストの先頭
-static struct client *clientHead = NULL;
+struct client *clientHead = NULL;
 // テイルリストの最後
-static struct client *clientTail = NULL;
+struct client *clientTail = NULL;
 // ソケットアドレス
-static struct sockaddr *sa;
+struct sockaddr *sa;
 // リスニングソケット
-static fd_set listening_fds;
+fd_set listening_fds;
 // 監視対象のソケット
-static fd_set watching_fds;
+fd_set watching_fds;
 // fdから読み込んだサイズ
-static size_t left_read_sizes[FD_SETSIZE];
+size_t left_read_sizes[FD_SETSIZE];
 // fdに書き込んだサイズ
-static size_t left_write_sizes[FD_SETSIZE];
+size_t left_write_sizes[FD_SETSIZE];
 
 
 #pragma mark - Functions
@@ -185,8 +185,12 @@ int handle_send(int from, char *tos, char *msg)
     int i;
     char body[BUF_LEN];
     sprintf(body, "%s:< %s",get_client_name(from),msg);
+    char msg_buf[BUF_LEN];
+    sprintf(msg_buf, "%zi\n",strlen(body));
+    sprintf(msg_buf, "%i\n", client_cmd_recieve);
+    sprintf(msg_buf, "%s\n",body);
+    
     // 書き込み
-    printf("%i\n",to_len);
     for (i = 0; i < to_len + 1; i++) {
         write(to_fds[i], body, strlen(body));
     }
