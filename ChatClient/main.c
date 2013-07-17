@@ -290,16 +290,21 @@ int main(int argc, char* argv[]){
             recv_len = read(sock, recv_buf, BUF_LEN);
             size_t msg_len = atoi(strtok(recv_buf, "\n"));
             client_cmd_t cmd = atoi(strtok(NULL, "\n"));
+            char *msg = strtok(NULL, "\n");
             switch (cmd) {
                 case client_cmd_recieve: {
-                    char *msg;
-                    msg = strtok(NULL, "\n");
+                    // メッセージ受信
                     sprintf(msg + strlen(msg), "\n");
                     waddstr(recv_wind, msg);
                     wrefresh(recv_wind);
                 }
                     break;
-                case client_cmd_change_user:
+                case client_cmd_change_user: {
+                    // ユーザーの数変化
+                    wclear(users_wind);
+                    waddstr(users_wind, msg);
+                    wrefresh(users_wind);
+                }
                     break;
                 default:
                     break;

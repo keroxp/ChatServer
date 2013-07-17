@@ -34,6 +34,7 @@ typedef enum{
 
 typedef enum{
     client_cmd_recieve,     // メッセージ受信
+    client_cmd_change_user, // ユーザ数の変化
     client_cmd_errror       // エラー
 }client_cmd_t;
 
@@ -82,6 +83,8 @@ const char * get_host_command_name(host_cmd_t cmd);
 
 int get_client_fd(const char *name);
 int is_client(int fd);
+
+void handle_change_user(void);
 
 #pragma mark - Main
 
@@ -297,6 +300,28 @@ int handle_listening_socket(int fd, int max_fd)
     return (ns > max_fd) ? ns : max_fd;
 }
 
+void handle_change_user()
+{
+    struct client *c;
+    c = clientHead;
+    char usr_list[BUF_LEN];
+    memset(usr_list, '\0', BUF_LEN);
+    while (c != NULL) {
+        sprintf(usr_list + strlen(usr_list), "%s,",c->name);
+        c = c->next;
+    }
+    printf("%s\n",usr_list);
+    char msg_buf[BUF_LEN];
+    sprintf(msg_buf, "%zi\n",strlen(usr_list));
+    sprintf(msg_buf + strlen(msg_buf), "%i\n", client_cmd_change_user);
+    sprintf(msg_buf + strlen(msg_buf), "%s\n", usr_list);
+    c = clientHead;
+    while (c != NULL) {
+        write(c->fd, msg_buf, strlen(msg_buf));
+        c = c->next;
+    }
+}
+
 #pragma mark - Util
 
 const char * get_host_command_name(host_cmd_t cmd)
@@ -363,6 +388,8 @@ void add_client(int fd, const char *name)
         clientTail = new;
     }
     new->next = NULL;
+    // 通知
+    handle_change_user();
 }
 
 /* クライアントをリストから削除する */
@@ -385,6 +412,8 @@ void remove_client(int fd)
             }
             free(c);            
             printf("fd#%i は削除されました\n",fd);
+            // 通知
+            handle_change_user();
             return;
         }
         p = c;
