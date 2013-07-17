@@ -187,12 +187,21 @@ int handle_send(int from, char *tos, char *msg)
     sprintf(body, "%s:< %s",get_client_name(from),msg);
     char msg_buf[BUF_LEN];
     sprintf(msg_buf, "%zi\n",strlen(body));
-    sprintf(msg_buf, "%i\n", client_cmd_recieve);
-    sprintf(msg_buf, "%s\n",body);
-    
-    // 書き込み
-    for (i = 0; i < to_len + 1; i++) {
-        write(to_fds[i], body, strlen(body));
+    sprintf(msg_buf + strlen(msg_buf), "%i\n", client_cmd_recieve);
+    sprintf(msg_buf + strlen(msg_buf), "%s\n",body);
+    if (strcmp(tos, "all") == 0) {
+        // 全員に配信
+        struct client *c;
+        c = clientHead;
+        while (c != NULL) {
+            write(c->fd, msg_buf, strlen(msg_buf));
+            c = c->next;
+        }
+    }else{
+        // 個別に書き込み
+        for (i = 0; i < to_len + 1; i++) {
+            write(to_fds[i], msg_buf, strlen(msg_buf));
+        }
     }
     return 0;
 }
