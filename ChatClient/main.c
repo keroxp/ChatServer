@@ -34,7 +34,6 @@ typedef enum{
     host_cmd_unknown = 0,
     host_cmd_register,      // 名前登録
     host_cmd_send,          // メッセージ送信
-    host_cmd_lists          // 接続中のクライアント一覧
 }host_cmd_t;
 
 typedef enum{
@@ -47,6 +46,7 @@ typedef enum{
 static char to_buf[BUF_LEN];    // 宛先用バッファ
 static char send_buf[BUF_LEN];  // 送信用バッファ
 static char recv_buf[BUF_LEN];  // 受信用バッファ
+static char msg_buf[BUF_LEN];   // メッセージバッファ
 static WINDOW *users_wind, *to_wind, *send_wind, *recv_wind; // windows
 static WINDOW *users_frame, *to_frame, *send_frame, *recv_frame; // frames
 static WINDOW *active_wind;
@@ -159,7 +159,9 @@ void register_name(int sock, const char * name)
     
     if (write(sock, rgst_buf, strlen(rgst_buf)) > 1) {
         // registerd
-        waddstr(recv_wind, "You Are Registerd.\n");
+        waddstr(recv_wind, "You Are Registerd as ");
+        waddstr(recv_wind, name);
+        waddstr(recv_wind, "\n");
     }else{
         // not registerd
         waddstr(recv_wind, "!! You Are Not Registered !!\n");
@@ -246,25 +248,24 @@ int main(int argc, char* argv[]){
                 wrefresh(send_wind);
                 wmove(to_wind, 0, 0);
                 active_wind = to_wind;
-                
-                char msg[BUF_LEN];
-                sprintf(msg, "%zi\n",strlen(to_buf) + strlen(send_buf));
-                sprintf(msg + strlen(msg), "%i\n",host_cmd_send);
+                sprintf(msg_buf, "%zi\n",strlen(to_buf) + strlen(send_buf));
+                sprintf(msg_buf + strlen(msg_buf), "%i\n",host_cmd_send);
                 if (strlen(to_buf) == 0) {
                     // 全員
-                    sprintf(msg + strlen(msg), "all\n");
+                    sprintf(msg_buf + strlen(msg_buf), "all\n");
                 }else{
                     // 個別
-                    sprintf(msg + strlen(msg), "%s\n",to_buf);
+                    sprintf(msg_buf + strlen(msg_buf), "%s\n",to_buf);
                 }
-                sprintf(msg + strlen(msg), "%s\n",send_buf);
+                sprintf(msg_buf + strlen(msg_buf), "%s\n",send_buf);
                 ssize_t done = 0;
-                done = write(sock, msg, strlen(msg));
+                done = write(sock, msg_buf, strlen(msg_buf));
                 if (done < 1) {
                     exit(EXIT_FAILURE);
                 }
-                memset(to_buf, '\0', to_len);
-                memset(send_buf, '\0', send_len);
+                memset(to_buf, '\0', BUF_LEN);
+                memset(send_buf, '\0', BUF_LEN);
+                memset(msg_buf, '\0', BUF_LEN);
                 to_len = 0;
                 send_len = 0;
             }else if (c == '\t'){

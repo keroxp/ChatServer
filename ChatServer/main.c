@@ -20,7 +20,7 @@
 /* 接続しているクライアントのリスト */
 struct client {
     int fd;                 // ファイルディスクリプタへのポインタ
-    char name[8];           // スクリーンネーム
+    char name[10];           // スクリーンネーム
     struct client *next;    // リストの次
 };
 
@@ -29,7 +29,6 @@ typedef enum{
     host_cmd_unknown = 0,
     host_cmd_register,       // 接続
     host_cmd_send,          // メッセージ送信
-    host_cmd_lists          // 接続中のクライアント
 }host_cmd_t;
 
 typedef enum{
@@ -52,25 +51,17 @@ struct sockaddr *sa;
 fd_set listening_fds;
 // 監視対象のソケット
 fd_set watching_fds;
-// fdから読み込んだサイズ
-size_t left_read_sizes[FD_SETSIZE];
-// fdに書き込んだサイズ
-size_t left_write_sizes[FD_SETSIZE];
-
 
 #pragma mark - Functions
 
 int _test (void);
 
-ssize_t _read(int fd, void *buf, size_t len);
-ssize_t _write(int fd, void *buf, size_t len);
-
 int listen_to_clients(const char *port);
 
 int handle_listening_socket(int fd, int max_fd);
 int handle_client_socket(int fd);
+void handle_change_user(void);
 
-int parse_message(const char *msg);
 int handle_register(int fd, const char *name);
 int handle_send(int from, char *tos, char *msg);
 
@@ -83,8 +74,6 @@ const char * get_host_command_name(host_cmd_t cmd);
 
 int get_client_fd(const char *name);
 int is_client(int fd);
-
-void handle_change_user(void);
 
 #pragma mark - Main
 
@@ -357,14 +346,13 @@ const char * get_client_command_name(client_cmd_t cmd)
 
 int _test(void)
 {
-    
     add_client(3, "three");
     add_client(4, "four");
     assert(is_client(4));
     assert(!is_client(5));
-    remove_client(3);
     assert(strcmp(get_client_name(4),"four") == 0);
     assert(get_client_fd("four") == 4);
+    remove_client(3);
     assert(!is_client(3));
     remove_client(4);
     remove_client(1);
@@ -377,7 +365,7 @@ void add_client(int fd, const char *name)
 {
     // 新しいクライアントを作成
     struct client *new;
-    new = malloc(sizeof(new));
+    new = malloc(sizeof(struct client));
     new->fd = fd;
     strcpy(new->name, name);
     if (clientHead == NULL) {
@@ -397,9 +385,6 @@ void remove_client(int fd)
 {
     struct client *c;
     struct client *p;
-    if (!is_client(fd)) {
-        return;
-    }
     c = clientHead;
     while (c != NULL) {
         if (c->fd == fd) {
@@ -467,36 +452,4 @@ int is_client(int fd)
     }
     printf("fd#%iはリストにはありません\n",fd);
     return 0;
-}
-
-#pragma mark - IO
-
-ssize_t _io(int rd, int fd, void *buf, size_t len)
-{
-    size_t left;
-    left = (rd) ? left_read_sizes[fd] : left_write_sizes[fd];
-    ssize_t done = 0;
-    while (done < len) {
-        done += (rd) ? read(fd, buf, len) : write(fd, buf, len);
-        if (done < 1) {
-            return done;
-        }
-        left -= done;
-    }
-    if (rd) {
-        left_read_sizes[fd] = left;
-    }else{
-        left_write_sizes[fd] = left;
-    }
-    return done;
-}
-
-ssize_t _read(int fd, void *buf, size_t len)
-{
-    return _io(1,fd,buf,len);
-}
-
-ssize_t _write(int fd, void *buf, size_t len)
-{
-    return _io(0,fd,buf,len);
 }
