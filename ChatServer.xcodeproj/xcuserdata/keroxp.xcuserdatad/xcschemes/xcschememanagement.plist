@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SchemeUserState</key>
+	<dict>
+		<key>ChatApp.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+		<key>ChatAppTests.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
+		<key>ChatClient.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>ChatClientUI.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>ChatServer.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>0</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>A6428102178A59C000A3640C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A6A5F84B17926248009FB798</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A6A5F86D17926248009FB798</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A6A5F8861792627A009FB798</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A6A5F89F1792627B009FB798</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A6C6A4B3178D20D6004A7819</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>
